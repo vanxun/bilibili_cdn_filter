@@ -2,6 +2,8 @@
 
 一个面向 Chrome / Edge 的 Manifest V3 扩展：过滤已知容易引发 B 站视频卡顿的 PCDN 地址，优先使用 `bilivideo.com` 播放线路。
 
+请见[解决B站网页端播放视频卡顿的问题](https://blog.vanxun.xyz/archive/1788313962931-4855d8c4)
+
 本拓展最后验证于 2026.9.2。
 
 ## 功能
