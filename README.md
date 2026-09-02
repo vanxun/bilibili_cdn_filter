@@ -1,4 +1,4 @@
-# Bilibili CDN Filter v4.1
+# Bilibili CDN Filter
 
 一个面向 Chrome / Edge 的 Manifest V3 扩展：过滤已知容易引发 B 站视频卡顿的 PCDN 地址，优先使用 `bilivideo.com` 播放线路。
 
