@@ -1,0 +1,2 @@
+# bilibili_cdn_filter
+一个供浏览器使用的用于屏蔽B站廉价PCDN导致播放卡顿的简易扩展
