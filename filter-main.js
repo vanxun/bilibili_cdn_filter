@@ -4,7 +4,7 @@
   window.__bilibiliCdnFilterV4 = true;
 
   const BAD_HOSTS = ['mcdn.bilivideo.cn', 'edge.mountaintoys.cn', 'szbdyd.com'];
-  const BASE_KEYS = ['baseUrl', 'base_url'];
+  const BASE_KEYS = ['baseUrl', 'base_url', 'url'];
   const BACKUP_KEYS = ['backupUrl', 'backup_url'];
 
   function hostname(value) {
@@ -23,8 +23,9 @@
   function isPlayApi(value) {
     try {
       const url = new URL(value, location.href);
+      const path = url.pathname.toLowerCase();
       return matches(url.hostname.toLowerCase(), 'bilibili.com')
-        && url.pathname.toLowerCase().includes('playurl');
+        && (path.includes('playurl') || /\/(?:x|pgc)\/player(?:\/|$)/.test(path));
     } catch {
       return false;
     }

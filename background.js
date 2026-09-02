@@ -33,5 +33,10 @@ chrome.runtime.onMessage.addListener((message, sender) => {
 });
 
 chrome.declarativeNetRequest.onRuleMatchedDebug.addListener(info => {
-  saveLog({ type: 'DNR-block', url: info.request?.url }).catch(() => {});
+  const resourceType = info.request?.type || 'unknown';
+  saveLog({
+    type: `DNR-block:${resourceType}`,
+    url: info.request?.url,
+    replacement: info.request?.initiator || ''
+  }).catch(() => {});
 });

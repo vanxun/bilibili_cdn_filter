@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Bilibili CDN Filter",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "description": "在 Bilibili 页面内过滤已知慢速 PCDN，并记录最近命中。",
   "permissions": ["declarativeNetRequest", "declarativeNetRequestFeedback", "storage"],
   "host_permissions": [
