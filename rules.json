@@ -1,0 +1,5 @@
+[
+  {"id":1,"priority":1,"action":{"type":"block"},"condition":{"urlFilter":"||mcdn.bilivideo.cn^"}},
+  {"id":2,"priority":1,"action":{"type":"block"},"condition":{"urlFilter":"||edge.mountaintoys.cn^"}},
+  {"id":3,"priority":1,"action":{"type":"block"},"condition":{"urlFilter":"||szbdyd.com^"}}
+]

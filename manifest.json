@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Bilibili CDN Filter",
+  "version": "4.2.0",
+  "description": "在 Bilibili 页面内过滤已知慢速 PCDN，并记录最近命中。",
+  "permissions": ["declarativeNetRequest", "declarativeNetRequestFeedback", "storage"],
+  "host_permissions": [
+    "*://*.mcdn.bilivideo.cn/*",
+    "*://*.edge.mountaintoys.cn/*",
+    "*://*.szbdyd.com/*"
+  ],
+  "background": {"service_worker": "background.js"},
+  "action": {"default_title": "Bilibili CDN Filter", "default_popup": "popup.html"},
+  "content_scripts": [
+    {
+      "matches": ["*://*.bilibili.com/*"],
+      "js": ["filter-main.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": ["*://*.bilibili.com/*"],
+      "js": ["bridge.js"],
+      "run_at": "document_start",
+      "world": "ISOLATED"
+    }
+  ],
+  "declarative_net_request": {
+    "rule_resources": [{"id": "ruleset_1", "enabled": true, "path": "rules.json"}]
+  }
+}
