@@ -20,6 +20,15 @@
   const isBad = value => BAD_HOSTS.some(domain => matches(hostname(value), domain));
   const isGood = value => matches(hostname(value), 'bilivideo.com');
 
+  function officialScore(value) {
+    if (isBad(value)) return -1;
+    const host = hostname(value);
+    if (!isGood(value)) return host ? 50 : 0;
+    if (host.startsWith('upos-') && host.includes('-mirror')) return 300;
+    if (host.startsWith('cn-')) return 100;
+    return 200;
+  }
+
   function isPlayApi(value) {
     try {
       const url = new URL(value, location.href);
@@ -48,7 +57,7 @@
       seen.add(value);
       result.push(value);
     }
-    const sorted = [...result].sort((a, b) => Number(isGood(b)) - Number(isGood(a)));
+    const sorted = [...result].sort((a, b) => officialScore(b) - officialScore(a));
     if (!changed) changed = sorted.some((value, index) => value !== result[index]);
     return { values: sorted, changed };
   }
@@ -67,17 +76,33 @@
     }
 
     for (const key of BASE_KEYS) {
-      if (!isBad(node[key])) continue;
+      const original = node[key];
+      if (typeof original !== 'string') continue;
       let replacement = '';
+      let replacementScore = -1;
+      let selectedBackupKey = '';
       for (const backupKey of BACKUP_KEYS) {
         const candidates = node[backupKey];
         if (!Array.isArray(candidates) || !candidates.length) continue;
-        replacement = candidates.find(isGood) || candidates[0];
-        if (replacement) break;
+        for (const candidate of candidates) {
+          const score = officialScore(candidate);
+          if (score > replacementScore) {
+            replacement = candidate;
+            replacementScore = score;
+            selectedBackupKey = backupKey;
+          }
+        }
       }
-      if (!replacement) { report('bad-base-no-backup', node[key]); continue; }
-      report('promoted', node[key], replacement);
+      if (isBad(original) && !replacement) {
+        report('bad-base-no-backup', original);
+        continue;
+      }
+      if (!replacement || replacementScore <= officialScore(original)) continue;
+      report(isBad(original) ? 'promoted' : 'official-promoted', original, replacement);
       node[key] = replacement;
+      if (!isBad(original) && selectedBackupKey) {
+        node[selectedBackupKey] = clean([...node[selectedBackupKey], original]).values;
+      }
       changed = true;
     }
 
